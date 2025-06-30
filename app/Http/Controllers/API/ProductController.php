@@ -329,7 +329,7 @@ class ProductController extends Controller
         // Fetch recently added products, with the most recent first
         $newCollections = Product::with('product_images')  // Load images for each product
             ->orderBy('created_at', 'desc')
-            ->take(8)  // Adjust the number of products as needed
+            ->take(12)  // Adjust the number of products as needed
             ->get();
 
         // Return the new collections in JSON format
