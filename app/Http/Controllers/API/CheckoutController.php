@@ -61,7 +61,7 @@ class CheckoutController extends Controller
         $order->zipcode = $request->zipcode;
         $order->payment_mode = $request->payment_mode ?? "COD"; // Default to COD if not provided
         $order->payment_id = $request->payment_id;
-        $order->tracking_no = "Hair" . rand(111111, 999999);
+        $order->tracking_no = "PGRegal" . rand(111111, 999999);
         $order->save();
 
         // Fetch cart for user or guest

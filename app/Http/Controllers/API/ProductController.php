@@ -142,7 +142,7 @@ class ProductController extends Controller
                 $image->move('uploads/product_images/', $imagePath);
 
                 // Save image path in product_images table
-                ProductImage::create([
+                ProductImage::create([ 
                     'product_id' => $product->id,
                     'image_path' => 'uploads/product_images/' . $imagePath,
                 ]);
@@ -345,7 +345,7 @@ class ProductController extends Controller
         $popularProducts = Product::with('product_images')  // Load images for each product
             ->where('popular', 1) 
             ->inRandomOrder() 
-            ->take(5)  // Limit to 4 products
+            ->take(10)  // Limit to 4 products
             ->get();
 
         // Return the popular products in JSON format
