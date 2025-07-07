@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 class ProductController extends Controller
 {   
     public function deleteProductImage($id)
+
     {
         // Find the product image by its ID
         $productImage = ProductImage::find($id);
@@ -200,87 +201,167 @@ class ProductController extends Controller
         }
     }
 
+    // public function update(Request $request, $id)
+    // {
+    //     // Validate the request
+    //     $validator = Validator::make($request->all(), [
+    //         'category_id' => 'required|max:255',
+    //         'slug' => 'required|max:255',
+    //         'name' => 'required|max:255',
+    //         'meta_title' => 'required|max:255',
+    //         'brand' => 'required|max:255',
+    //         'selling_price' => 'required|max:255',
+    //         'original_price' => 'required|max:255',
+    //         'qty' => 'required|integer',
+    //         'images' => 'sometimes|array|max:8',
+    //         'images.*' => 'mimes:jpg,jpeg,png|max:2048', // Max 2MB per image
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return response()->json([
+    //             'status' => 422,
+    //             'validation_errors' => $validator->messages(),
+    //         ]);
+    //     }
+
+    //     // Find the product by ID
+    //     $product = Product::find($id);
+
+    //     if (!$product) {
+    //         return response()->json([
+    //             'status' => 404,
+    //             'message' => 'Product Not Found',
+    //         ]);
+    //     }
+
+    //     // Update product details
+    //     $product->update([
+    //         'category_id' => $request->input('category_id'),
+    //         'slug' => $request->input('slug'),
+    //         'name' => $request->input('name'),
+    //         'description' => $request->input('description'),
+    //         'meta_title' => $request->input('meta_title'),
+    //         'meta_keyword' => $request->input('meta_keyword'),
+    //         'meta_descrip' => $request->input('meta_descrip'),
+    //         'brand' => $request->input('brand'),
+    //         'selling_price' => $request->input('selling_price'),
+    //         'original_price' => $request->input('original_price'),
+    //         'qty' => $request->input('qty'),
+    //         'featured' => $request->input('featured') ? 1 : 0,
+    //         'popular' => $request->input('popular') ? 1 : 0,
+    //         'status' => $request->input('status') ? 1 : 0,
+    //     ]);
+
+    //     // Handle image uploads
+    //     if ($request->hasFile('images')) {
+    //         // Optionally: Remove old images if new ones are uploaded
+    //         foreach ($product->images as $existingImage) {
+    //             // Delete the file from storage
+    //             if (file_exists($existingImage->image_path)) {
+    //                 unlink($existingImage->image_path);
+    //             }
+    //             // Remove the image record from the database
+    //             $existingImage->delete();
+    //         }
+
+    //         // Upload new images
+    //         foreach ($request->file('images') as $image) {
+    //             $imagePath = time() . '-' . $image->getClientOriginalName();
+    //             $image->move('uploads/product_images/', $imagePath);
+
+    //             // Save new image path to the product_images table
+    //             ProductImage::create([
+    //                 'product_id' => $product->id,
+    //                 'image_path' => 'uploads/product_images/' . $imagePath,
+    //             ]);
+    //         }
+    //     }
+
+    //     return response()->json([
+    //         'status' => 200,
+    //         'message' => 'Product Updated Successfully',
+    //     ]);
+    // }
+
     public function update(Request $request, $id)
-    {
-        // Validate the request
-        $validator = Validator::make($request->all(), [
-            'category_id' => 'required|max:255',
-            'slug' => 'required|max:255',
-            'name' => 'required|max:255',
-            'meta_title' => 'required|max:255',
-            'brand' => 'required|max:255',
-            'selling_price' => 'required|max:255',
-            'original_price' => 'required|max:255',
-            'qty' => 'required|integer',
-            'images' => 'sometimes|array|max:8',
-            'images.*' => 'mimes:jpg,jpeg,png|max:2048', // Max 2MB per image
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'category_id' => 'required|max:255',
+        'slug' => 'required|max:255',
+        'name' => 'required|max:255',
+        'meta_title' => 'required|max:255',
+        'brand' => 'required|max:255',
+        'selling_price' => 'required|max:255',
+        'original_price' => 'required|max:255',
+        'qty' => 'required|integer',
+        'images' => 'sometimes|array|max:8',
+        'images.*' => 'mimes:jpg,jpeg,png|max:2048',
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 422,
-                'validation_errors' => $validator->messages(),
-            ]);
-        }
-
-        // Find the product by ID
-        $product = Product::find($id);
-
-        if (!$product) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'Product Not Found',
-            ]);
-        }
-
-        // Update product details
-        $product->update([
-            'category_id' => $request->input('category_id'),
-            'slug' => $request->input('slug'),
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'meta_title' => $request->input('meta_title'),
-            'meta_keyword' => $request->input('meta_keyword'),
-            'meta_descrip' => $request->input('meta_descrip'),
-            'brand' => $request->input('brand'),
-            'selling_price' => $request->input('selling_price'),
-            'original_price' => $request->input('original_price'),
-            'qty' => $request->input('qty'),
-            'featured' => $request->input('featured') ? 1 : 0,
-            'popular' => $request->input('popular') ? 1 : 0,
-            'status' => $request->input('status') ? 1 : 0,
-        ]);
-
-        // Handle image uploads
-        if ($request->hasFile('images')) {
-            // Optionally: Remove old images if new ones are uploaded
-            foreach ($product->images as $existingImage) {
-                // Delete the file from storage
-                if (file_exists($existingImage->image_path)) {
-                    unlink($existingImage->image_path);
-                }
-                // Remove the image record from the database
-                $existingImage->delete();
-            }
-
-            // Upload new images
-            foreach ($request->file('images') as $image) {
-                $imagePath = time() . '-' . $image->getClientOriginalName();
-                $image->move('uploads/product_images/', $imagePath);
-
-                // Save new image path to the product_images table
-                ProductImage::create([
-                    'product_id' => $product->id,
-                    'image_path' => 'uploads/product_images/' . $imagePath,
-                ]);
-            }
-        }
-
+    if ($validator->fails()) {
         return response()->json([
-            'status' => 200,
-            'message' => 'Product Updated Successfully',
+            'status' => 422,
+            'validation_errors' => $validator->messages(),
         ]);
     }
+
+    $product = Product::find($id);
+    if (!$product) {
+        return response()->json([
+            'status' => 404,
+            'message' => 'Product Not Found',
+        ]);
+    }
+
+    // Update product details
+    $product->update([
+        'category_id' => $request->input('category_id'),
+        'slug' => $request->input('slug'),
+        'name' => $request->input('name'),
+        'description' => $request->input('description'),
+        'meta_title' => $request->input('meta_title'),
+        'meta_keyword' => $request->input('meta_keyword'),
+        'meta_descrip' => $request->input('meta_descrip'),
+        'brand' => $request->input('brand'),
+        'selling_price' => $request->input('selling_price'),
+        'original_price' => $request->input('original_price'),
+        'qty' => $request->input('qty'),
+        'featured' => $request->input('featured') ? 1 : 0,
+        'popular' => $request->input('popular') ? 1 : 0,
+        'status' => $request->input('status') ? 1 : 0,
+    ]);
+
+    // Handle images to delete
+    if ($request->has('images_to_delete')) {
+        foreach ($request->input('images_to_delete') as $imageId) {
+            $image = ProductImage::find($imageId);
+            if ($image) {
+                if (File::exists(public_path($image->image_path))) {
+                    File::delete(public_path($image->image_path));
+                }
+                $image->delete();
+            }
+        }
+    }
+
+    // Handle new images
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $image) {
+            $imagePath = time() . '-' . $image->getClientOriginalName();
+            $image->move('uploads/product_images/', $imagePath);
+
+            ProductImage::create([
+                'product_id' => $product->id,
+                'image_path' => 'uploads/product_images/' . $imagePath,
+            ]);
+        }
+    }
+
+    return response()->json([
+        'status' => 200,
+        'message' => 'Product Updated Successfully',
+    ]);
+}
 
             
     
